@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DigiYatra Kids</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Nunito:wght@600;700;800&display=swap">
+<style>
+/* Concept: a phone-sized prototype. Warm neutrals with soft sky, mint, butter and coral. Jetty the jet leads every step. */
+:root{--bg:#F7F4EE;--stage:#E9E4D9;--ink:#1F2430;--card:#FFFFFF;--line:#E4DFD5;--muted:#5B6270;--body:#3A4150;--coral:#FF8A6B;--sky:#DCEBF7;--butter:#FBE9B7;--mint:#D5EFEA;--blush:#FFE0D6;--sand:#E9E4D9;--sun:#F6C85F;--teal:#3E9C8F;--teal2:#4FB6A8;--head:'Baloo 2',system-ui,sans-serif;--text:'Nunito',system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--stage);color:var(--ink);font-family:var(--text);font-size:16px;-webkit-tap-highlight-color:transparent}
+button,input{font-family:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.stage{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:24px;padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.device{position:relative;width:min(390px,100%);height:min(844px,calc(100dvh - 40px));min-height:600px;background:var(--bg);border:8px solid var(--ink);border-radius:40px;overflow:hidden}
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;padding:20px 20px 0;overflow-y:auto;overflow-x:hidden}
+.in{animation:slide .3s ease both}
+@keyframes slide{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+.controls{width:min(300px,100%);background:var(--card);border:2px solid var(--line);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.controls h2{margin:0;font-family:var(--head);font-size:22px}
+.controls h3{margin:6px 0 0;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.controls p{margin:0;font-size:14px;line-height:1.4;color:var(--body)}
+.jg{display:flex;flex-wrap:wrap;gap:6px}
+.jb{min-height:36px;padding:0 12px;border:2px solid var(--line);border-radius:18px;background:var(--bg);font-size:14px;font-weight:700}
+.jb:hover{border-color:var(--ink)}
+.jb.reset{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media (max-width:440px){.stage{padding-top:8px;gap:16px}.device{border-width:0;border-radius:28px;height:calc(100dvh - 24px)}}
+h1{margin:0;font-family:var(--head);font-size:32px;line-height:36px;font-weight:700}
+.c{text-align:center}
+.lead{margin:8px 0 0;font-size:18px;line-height:25px;font-weight:700;color:var(--body)}
+.fine{margin:8px 0 0;font-size:14px;line-height:19px;font-weight:700;color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:10px}
+.top{display:flex;align-items:center;gap:12px}
+.back{width:48px;height:48px;flex:none;border-radius:24px;background:var(--card);border:2px solid var(--line);display:grid;place-items:center}
+.bars{display:flex;gap:6px;flex:1}.bars i{height:8px;flex:1;border-radius:4px;background:#DDD7CB}.bars i.on{background:var(--coral)}
+.step{font-size:15px;font-weight:800;color:var(--muted)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:60px;padding:0 14px;line-height:1.1;text-align:center;border:0;border-radius:30px;background:var(--coral);color:var(--ink);font-family:var(--head);font-size:22px;font-weight:700}
+.btn:disabled{background:var(--sand);color:var(--muted);cursor:not-allowed}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.ghost{background:transparent;border:2px solid var(--ink);height:52px;font-size:20px}
+.btn.sm{height:48px;font-size:18px;width:auto;padding:0 18px;border-radius:24px}
+.cta{position:sticky;bottom:0;margin:auto -20px 0;padding:12px 20px 20px;background:var(--bg);display:flex;flex-direction:column;gap:10px}
+.nav{position:sticky;bottom:0;margin:auto -20px 0;display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-top:2px solid var(--ink);flex:none}
+.nav button{height:72px;border:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:15px;font-weight:800;color:var(--muted)}
+.nav button.on{color:var(--ink);box-shadow:inset 0 5px 0 var(--sun)}
+.pad{flex:none;height:14px}
+.say{display:flex;align-items:flex-end;gap:6px;margin-top:12px}
+.say .j{flex:none;transform:rotate(-4deg)}
+.bubble{flex:1;min-width:0;background:var(--card);border:2px solid var(--line);border-radius:20px 20px 20px 6px;padding:12px 14px;margin-bottom:10px;font-size:18px;line-height:24px;font-weight:800}
+.card{background:var(--card);border:2px solid var(--line);border-radius:24px;padding:14px 16px}
+.row{display:flex;align-items:center;gap:12px;min-height:60px;padding:8px 14px 8px 10px;border-radius:20px;background:var(--card);border:2px solid var(--line);font-size:18px;line-height:22px;font-weight:800}
+.row .ico{width:40px;height:40px;flex:none;border-radius:20px;display:grid;place-items:center;background:var(--t,var(--sky))}
+.tile{background:var(--t,var(--sky));border:0}
+.lbl{font-size:16px;font-weight:800;color:var(--muted);margin:14px 0 6px}
+.field{width:100%;height:56px;border:2px solid var(--line);border-radius:18px;background:var(--card);padding:0 16px;font-size:20px;font-weight:700}
+.field:focus{border-color:var(--ink)}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.chips.two{grid-template-columns:repeat(2,1fr)}
+.chip{min-height:52px;border:2px solid var(--line);border-radius:18px;background:var(--card);font-family:var(--head);font-size:22px;font-weight:700}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip.txt{font-family:var(--text);font-size:17px;font-weight:800}
+.pill{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;font-size:14px;font-weight:800;background:var(--sun)}
+.panel{border-radius:28px;background:var(--sky);position:relative;overflow:hidden;display:grid;place-items:center}
+.float{animation:float 3.2s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-8px) rotate(-2deg)}}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.key{height:62px;border:2px solid var(--line);border-radius:20px;background:var(--card);font-family:var(--head);font-size:28px;font-weight:700;display:grid;place-items:center}
+.key:active{background:var(--sand)}
+.dots{display:flex;justify-content:center;gap:16px;margin-top:20px}
+.dots i{width:22px;height:22px;border-radius:11px;border:3px solid var(--ink)}.dots i.on{background:var(--ink)}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.msg{min-height:24px;margin-top:10px;text-align:center;font-size:17px;font-weight:800}
+.scan{position:relative;width:200px;height:200px}
+.scan b{position:absolute;width:44px;height:44px;border:6px solid var(--ink)}
+.scan b:nth-child(1){left:0;top:0;border-right:0;border-bottom:0;border-radius:18px 0 0 0}
+.scan b:nth-child(2){right:0;top:0;border-left:0;border-bottom:0;border-radius:0 18px 0 0}
+.scan b:nth-child(3){left:0;bottom:0;border-right:0;border-top:0;border-radius:0 0 0 18px}
+.scan b:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-radius:0 0 18px 0}
+.scan svg{position:absolute;inset:0}
+.scan .line{position:absolute;left:12px;right:12px;height:5px;border-radius:3px;background:var(--coral);top:10px;animation:sweep 1.4s ease-in-out infinite}
+@keyframes sweep{50%{top:182px}}
+.okbadge{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:18px;background:var(--mint);font-size:16px;font-weight:800}
+.belt{position:relative;width:100%;height:190px}
+.bagimg{position:absolute;left:100px;top:34px}
+.bagimg.go{animation:ride 1.4s ease-in forwards}
+@keyframes ride{to{transform:translateX(220px);opacity:0}}
+.tag{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.bagbtn{height:110px;border:3px solid var(--line);border-radius:22px;background:var(--card);display:grid;place-items:center}
+.bagbtn:hover{border-color:var(--ink)}
+.bagbtn.ok{background:var(--mint);border-color:var(--ink)}
+.stamp{display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--ink);border-radius:50%;font-family:var(--head);font-weight:700;background:var(--b,var(--sky))}
+.stamp small{font-family:var(--text);font-size:13px;font-weight:800}
+.stampgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;justify-items:center}
+.sheet{position:absolute;inset:0;background:rgba(31,36,48,.55);display:flex;align-items:flex-end;z-index:5}
+.sheet>div{width:100%;background:var(--bg);border-radius:28px 28px 0 0;padding:22px 20px 28px;text-align:center;animation:rise .3s ease both}
+@keyframes rise{from{transform:translateY(60px);opacity:0}}
+.pass{margin:16px auto 0;width:260px;border:3px solid var(--ink);border-radius:20px;background:var(--card);padding:12px 14px;text-align:left;animation:tap 1.4s ease-in-out infinite}
+@keyframes tap{50%{transform:translateY(-14px)}}
+.arc{position:relative;width:100%;height:200px;margin-top:14px;border-radius:28px;background:var(--sky);overflow:hidden}
+.arc>svg{position:absolute;inset:0}
+.jetpos{position:absolute;width:88px;transform:translate(-50%,-50%)}
+.meter{height:14px;border-radius:7px;background:#fff;overflow:hidden}.meter i{display:block;height:100%;background:var(--coral);border-radius:7px;transition:width .3s}
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.stat{border-radius:18px;background:var(--card);border:2px solid var(--line);padding:10px 8px;text-align:center}
+.stat b{display:block;font-family:var(--head);font-size:22px;line-height:24px}.stat span{font-size:13px;font-weight:800;color:var(--muted)}
+.fact{min-height:78px;transition:opacity .3s}
+.conf{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:4}
+.conf i{position:absolute;top:-14px;width:10px;height:14px;border-radius:3px;animation:fall 3.4s linear forwards}
+@keyframes fall{to{transform:translateY(900px) rotate(540deg);opacity:.8}}
+.slam{animation:slam .6s cubic-bezier(.2,1.6,.4,1) both .4s}
+@keyframes slam{from{transform:scale(2.4) rotate(-30deg);opacity:0}to{transform:rotate(-10deg);opacity:1}}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{height:84px;border:2px solid var(--line);border-radius:20px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:15px;font-weight:800}
+.rate button.on{background:var(--butter);border-color:var(--ink)}
+.toast{position:absolute;left:20px;right:20px;bottom:96px;z-index:9;background:var(--ink);color:#fff;border-radius:18px;padding:12px 16px;font-size:16px;font-weight:800;text-align:center;opacity:0;transform:translateY(10px);transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+.sw{display:flex;gap:10px;flex-wrap:wrap}
+.sw button{width:48px;height:48px;border-radius:24px;border:3px solid var(--line)}
+.sw button.on{border-color:var(--ink);box-shadow:0 0 0 3px #fff inset}
+.thumb{width:84px;height:56px;flex:none;border-radius:10px;overflow:hidden;background:var(--sky);display:grid;place-items:center}
+.thumb img{width:100%;height:100%;object-fit:cover}
+input[type=file]{position:absolute;width:1px;height:1px;opacity:0}
+label.btn{cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.conf{display:none}}
+</style>
+
+<main class="stage">
+  <section class="device" aria-label="DigiYatra Kids prototype">
+    <div id="app" class="scr"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </section>
+  <aside class="controls" aria-label="Prototype controls">
+    <h2>Prototype controls</h2>
+    <p>Tap through the phone, or jump to any screen to review it.</p>
+    <h3>Onboarding</h3>
+    <div class="jg">
+      <button class="jb" data-a="jump" data-to="welcome">Welcome</button>
+      <button class="jb" data-a="jump" data-to="about">About me</button>
+      <button class="jb" data-a="jump" data-to="handoff">Grown-up</button>
+      <button class="jb" data-a="jump" data-to="face">Face pass</button>
+      <button class="jb" data-a="jump" data-to="ready">All set</button>
+    </div>
+    <h3>Home</h3>
+    <div class="jg">
+      <button class="jb" data-a="jump" data-to="home">Home</button>
+      <button class="jb" data-a="jump" data-to="stamps">Stamps</button>
+      <button class="jb" data-a="jump" data-to="me">My account</button>
+    </div>
+    <h3>At the airport</h3>
+    <div class="jg">
+      <button class="jb" data-a="jump" data-to="map">Map</button>
+      <button class="jb" data-a="jump" data-to="entry">Entry</button>
+      <button class="jb" data-a="jump" data-to="checkin">Check-in</button>
+      <button class="jb" data-a="jump" data-to="security">Security</button>
+      <button class="jb" data-a="jump" data-to="gate">Gate</button>
+    </div>
+    <h3>Trip completion</h3>
+    <div class="jg">
+      <button class="jb" data-a="jump" data-to="boarded">Boarded</button>
+      <button class="jb" data-a="jump" data-to="inflight">In flight</button>
+      <button class="jb" data-a="jump" data-to="landed">Landed</button>
+      <button class="jb" data-a="jump" data-to="arrivals">Bags</button>
+      <button class="jb" data-a="jump" data-to="complete">Complete</button>
+    </div>
+    <button class="jb reset" data-a="reset">Restart prototype</button>
+    <p>Demo only: no camera, upload or message leaves this page. The PIN and photos live in this tab and are forgotten on reload.</p>
+  </aside>
+</main>
+
+<script>
+(function(){
+var KEY='dyk-proto-v1';
+var DEF={name:'',age:null,flown:true,color:'#FF8A6B',who:null,face:false,papers:{school:false,aadhaar:false},onboarded:false,flights:[],tripDone:false,rating:null,sent:false};
+var SAMPLE=[{c:'LKO',m:'Mar',b:'--butter'},{c:'GOI',m:'Jun',b:'--mint'},{c:'JAI',m:'Aug',b:'--sky'}];
+var TRIP={from:'DEL',fromCity:'Delhi',to:'BOM',toCity:'Mumbai',flight:'AI 887',seat:'14A',dep:'07:35',arr:'09:50',gate:'B12',board:'07:05',dur:'2h 15m',km:'1,150'};
+var ONB=['about','color','handoff','pin','papers','grownup','face','ready'];
+var S=clone(DEF);
+var V={screen:'welcome',hist:[],pin:null,pinCtx:null,pinBuf:'',pinFirst:null,pinMsg:'',shake:0,papersFrom:'onb',imgs:{},scan:'idle',bag:'idle',gateScan:false,bagPick:null,timers:[]};
+var app=document.getElementById('app'),toastEl=document.getElementById('toast');
+
+function clone(o){return JSON.parse(JSON.stringify(o))}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function load(){try{var r=localStorage.getItem(KEY);if(r){S=Object.assign(clone(DEF),JSON.parse(r))}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function later(f,ms){var id=setTimeout(f,ms);V.timers.push(id);return id}
+function every(f,ms){var id=setInterval(f,ms);V.timers.push(id);return id}
+function clearTimers(){V.timers.forEach(function(t){clearTimeout(t);clearInterval(t)});V.timers=[]}
+var tt;function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(tt);tt=setTimeout(function(){toastEl.classList.remove('show')},2400)}
+function name(){return S.name&&S.name.trim()?esc(S.name.trim()):'friend'}
+function say(first,short){return(S.flown||(S.age&&S.age>=12))?short:first}
+function role(){var w=S.who;if(!w)return'your grown-up';if(w.role==='Someone else')return w.name?esc(w.name):'your grown-up';return w.name?esc(w.role)+' ('+esc(w.name)+')':esc(w.role)}
+function level(n){return n<=0?['New Flyer',1]:n<3?['Cadet',3]:n<5?['Junior Pilot',5]:n<10?['Captain',10]:['Ace',n]}
+function tripDate(){var d=new Date(Date.now()+3*864e5);return d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}
+
+var P={chev:'<path d="M15 5l-7 7 7 7"/>',arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',check:'<path d="M5 12l5 5L20 7"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',phone:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/>',belt:'<rect x="2.5" y="9" width="19" height="6" rx="3"/><rect x="9" y="8" width="6" height="8" rx="1.5"/>',bottle:'<path d="M10 2.5h4v3l1.5 2.5V20a1.5 1.5 0 0 1-1.5 1.5h-4A1.5 1.5 0 0 1 8.5 20V8L10 5.5z"/><path d="M8.5 12h7"/>',jacket:'<path d="M8 3l-5 4 2 4 3-1.5V21h8V9.5L19 11l2-4-5-4-2 2h-4z"/>',snack:'<circle cx="12" cy="12" r="8.5"/><circle cx="9" cy="10" r=".8"/><circle cx="14.5" cy="9" r=".8"/><circle cx="12" cy="15" r=".8"/>',rest:'<circle cx="12" cy="5" r="2.5"/><path d="M8 21v-8l-1.5-4h11L16 13v8M12 12v9"/>',id:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="11" r="2"/><path d="M6.5 16c.5-1.5 1.5-2 2.5-2s2 .5 2.5 2M14 10h4M14 14h3"/>',star:'<path d="M12 6.5l1.7 3.6 3.9.5-2.9 2.7.8 3.9L12 15.300 8.500 17.200l.8-3.9-2.9-2.7 3.900-.5z"/>',home:'<path d="M3 11l9-8 9 8M5 10v10h14V10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/>',people:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.2"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5M15 19c0-1.8 1.2-3.2 3-3.6"/>',shield:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',bag:'<rect x="5" y="8" width="14" height="12" rx="2.5"/><path d="M9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>',seat:'<path d="M4 15h16M7 15v3M17 15v3M6 15a6 6 0 0 1 12 0"/>',del:'<path d="M9 5h11v14H9l-6-7z"/><path d="M13 9l4 6M17 9l-4 6"/>',send:'<path d="M4 12l16-8-6 16-3-7z"/>',wave:'<path d="M3 12c3-4 6-4 9 0s6 4 9 0"/>',camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.500"/>'};
+function ic(n,s,sw){s=s||24;return'<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="'+(sw||2.4)+'" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+P[n]+'</svg>'}
+function plane(s,rot){return'<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="transform:rotate('+(rot||0)+'deg)"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>'}
+
+function jetty(w,mood,o){o=o||{};var t=o.tail||S.color,k='#1F2430',f;
+ if(mood==='happy')f='<path d="M97 51 Q102 44 107 51M121 51 Q126 44 131 51" fill="none" stroke="'+k+'" stroke-width="3.5" stroke-linecap="round"/><path d="M106 58 Q114 72 123 58 Z" fill="'+k+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+ else if(mood==='wow')f='<circle cx="102" cy="50" r="6.500" fill="'+k+'"/><circle cx="126" cy="50" r="6.500" fill="'+k+'"/><circle cx="104" cy="48" r="2" fill="#fff"/><circle cx="128" cy="48" r="2" fill="#fff"/><ellipse cx="114" cy="65" rx="4.500" ry="5.500" fill="'+k+'"/>';
+ else f='<circle cx="102" cy="50" r="5.500" fill="'+k+'"/><circle cx="126" cy="50" r="5.500" fill="'+k+'"/><circle cx="104" cy="48" r="1.800" fill="#fff"/><circle cx="128" cy="48" r="1.800" fill="#fff"/><path d="M108 59 Q114 67 121 59" fill="none" stroke="'+k+'" stroke-width="3.500" stroke-linecap="round"/>';
+ return'<svg class="jetty'+(o.float?' float':'')+'" width="'+w+'" height="'+Math.round(w*.625)+'" viewBox="0 0 160 100" role="img" aria-label="Jetty, the friendly jet"><path d="M24 52 L10 18 L38 18 L52 46 Z" fill="'+t+'" stroke="'+k+'" stroke-width="4" stroke-linejoin="round"/><path d="M72 44 L98 10 L114 10 L100 46 Z" fill="#3E9C8F" stroke="'+k+'" stroke-width="4" stroke-linejoin="round"/><path d="M14 56 C14 38 40 30 80 30 L112 30 C140 32 152 46 152 56 C152 68 138 76 112 76 L40 76 C24 76 14 68 14 56 Z" fill="#fff" stroke="'+k+'" stroke-width="4" stroke-linejoin="round"/><path d="M66 62 L90 94 L108 94 L98 62 Z" fill="#4FB6A8" stroke="'+k+'" stroke-width="4" stroke-linejoin="round"/><circle cx="36" cy="54" r="5" fill="#CFE6F7" stroke="'+k+'" stroke-width="3"/><circle cx="52" cy="54" r="5" fill="#CFE6F7" stroke="'+k+'" stroke-width="3"/>'+f+'<circle cx="95" cy="61" r="5" fill="#FF8A6B" opacity=".55"/><circle cx="133" cy="61" r="5" fill="#FF8A6B" opacity=".55"/></svg>'}
+function cloud(x,y,s){return'<g transform="translate('+x+','+y+') scale('+(s||1)+')" fill="#fff"><ellipse cx="0" cy="0" rx="34" ry="14"/><ellipse cx="22" cy="-8" rx="22" ry="13"/></g>'}
+function bubble(txt,mood,w){return'<div class="say"><div class="j">'+jetty(w||112,mood||'smile')+'</div><div class="bubble">'+txt+'</div></div>'}
+function back(){return'<button class="back" data-a="back" aria-label="Go back">'+ic('chev')+'</button>'}
+function bars(n,t){var h='';for(var i=0;i<t;i++)h+='<i'+(i<n?' class="on"':'')+'></i>';return'<div class="bars">'+h+'</div>'}
+function obHead(id){var i=ONB.indexOf(id)+1;return'<div class="top">'+back()+'<div style="flex:1"><div class="step">Step '+i+' of '+ONB.length+'</div>'+bars(i,ONB.length)+'</div></div>'}
+function stopHead(n,title){return'<div class="top">'+back()+'<div style="flex:1"><div class="step">Stop '+n+' of 5</div>'+bars(n,5)+'</div></div><h1 style="margin-top:16px">'+title+'</h1>'}
+function cta(inner){return'<div class="cta">'+inner+'</div>'}
+function nextBtn(label,to,dis,extra){return'<button class="btn" data-next data-a="go" data-to="'+to+'"'+(dis?' disabled':'')+'>'+label+' '+ic('arrow',24,2.8)+'</button>'}
+function row(i,txt,t){return'<div class="row" style="--t:'+t+'"><span class="ico">'+ic(i)+'</span><span>'+txt+'</span></div>'}
+function nav(on){var d=[['home','Home','home'],['stamps','Stamps','star'],['me','Me','user']];return'<nav class="nav" aria-label="Main">'+d.map(function(x){return'<button data-a="tab" data-to="'+x[0]+'"'+(on===x[0]?' class="on" aria-current="page"':'')+'>'+ic(x[2],26)+'<span>'+x[1]+'</span></button>'}).join('')+'</nav>'}
+function stamp(c,m,b,sz){return'<div class="stamp" style="--b:var('+b+');width:'+sz+'px;height:'+sz+'px;font-size:'+Math.round(sz*.28)+'px;line-height:1"><span>'+c+'</span><small>'+m+'</small></div>'}
+function panel(h,inner){return'<div class="panel" style="height:'+h+'px;margin-top:14px">'+inner+'</div>'}
+function faceSvg(){return'<svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="A smiling face"><circle cx="100" cy="100" r="58" fill="#FBE9B7" stroke="#1F2430" stroke-width="5"/><circle cx="80" cy="92" r="6" fill="#1F2430"/><circle cx="120" cy="92" r="6" fill="#1F2430"/><path d="M78 117 Q100 138 122 117" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round"/></svg>'}
+function scanBox(){return'<div class="scan"><b></b><b></b><b></b><b></b>'+faceSvg()+(V.scan==='run'?'<div class="line"></div>':'')+'</div>'}
+function suitcase(){return'<svg width="100" height="82" viewBox="0 0 100 82" aria-hidden="true"><path d="M38 20V12a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v8" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round"/><rect x="6" y="20" width="88" height="58" rx="14" fill="#F6C85F" stroke="#1F2430" stroke-width="4"/><path d="M34 20v58M66 20v58" stroke="#1F2430" stroke-width="4" opacity=".35"/><circle cx="50" cy="49" r="13" fill="#fff" stroke="#1F2430" stroke-width="4"/><path d="M50 43l2 4.700 5 .5-3.800 3.300 1.200 4.900-4.400-2.600-4.400 2.600 1.200-4.900-3.800-3.300 5-.5z" fill="#FF8A6B" stroke="#1F2430" stroke-width="1.500" stroke-linejoin="round"/></svg>'}
+function otherBag(c,i){var d=['M18 20V14a5 5 0 0 1 5-5h12a5 5 0 0 1 5 5v6','M24 18V10h12v8'][i%2];return'<svg width="84" height="72" viewBox="0 0 100 82" aria-hidden="true"><path d="M38 20V12a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v8" fill="none" stroke="#1F2430" stroke-width="5" stroke-linecap="round"/><rect x="6" y="20" width="88" height="58" rx="14" fill="'+c+'" stroke="#1F2430" stroke-width="4"/><path d="M6 50h88" stroke="#1F2430" stroke-width="4" opacity=".35"/></svg>'}
+
+function stampRow(){var f=S.flights.slice(-3);var h='';f.forEach(function(x){h+='<div style="display:flex;flex-direction:column;align-items:center;gap:4px">'+stamp(x.c,x.m,x.b,72)+'</div>'});h+='<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div class="stamp" style="width:72px;height:72px;font-size:20px;border-style:dashed;border-color:#8A8F9A;color:var(--muted);background:transparent"><span>'+(S.tripDone?'+':TRIP.to)+'</span><small>'+(S.tripDone?'next':'next')+'</small></div></div>';return'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px;justify-items:center">'+h+'</div>'}
+
+var SC={
+welcome:function(){return'<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px"><div style="margin-bottom:10px">'+jetty(230,'happy',{float:1,tail:'#FF8A6B'})+'</div><h1 style="font-size:40px;line-height:44px">Hi! I\'m Jetty.</h1><p class="lead">I\'m your own private jet. I\'ll guide you through every part of the airport, from the front door to your seat.</p></div>'+cta('<button class="btn" data-a="go" data-to="about">Let\'s go '+ic('arrow',24,2.8)+'</button><p class="fine c" style="margin:0">Takes about 2 minutes. A grown-up helps with one part.</p>')},
+about:function(){var ages='';for(var a=5;a<=16;a++)ages+='<button class="chip'+(S.age===a?' on':'')+'" data-a="age" data-v="'+a+'" aria-pressed="'+(S.age===a)+'">'+a+'</button>';
+ return obHead('about')+'<h1 style="margin-top:16px">About you</h1>'+bubble('What should I call you?','smile',96)+'<label class="lbl" for="name" style="margin-top:6px">Your name</label><input class="field" id="name" type="text" maxlength="20" autocomplete="off" placeholder="Type your name" value="'+esc(S.name)+'"><div class="lbl">How old are you?</div><div class="chips">'+ages+'</div><div class="lbl">Have you flown before?</div><div class="chips two"><button class="chip txt'+(S.flown?' on':'')+'" data-a="flown" data-v="1" aria-pressed="'+S.flown+'">Yes, I have</button><button class="chip txt'+(!S.flown?' on':'')+'" data-a="flown" data-v="0" aria-pressed="'+!S.flown+'">First time!</button></div><div class="pad"></div>'+cta(nextBtn('Next','color',!(S.name.trim()&&S.age)))},
+color:function(){var cs=['#FF8A6B','#F6C85F','#4FB6A8','#7DB7E8','#C9A6E4'],h='';cs.forEach(function(c,i){h+='<button style="background:'+c+'" class="'+(S.color===c?'on':'')+'" data-a="color" data-v="'+c+'" aria-label="Tail color '+(i+1)+'" aria-pressed="'+(S.color===c)+'"></button>'});
+ return obHead('color')+'<h1 style="margin-top:16px">Dress up Jetty</h1><p class="lead" style="margin-top:4px">Pick a tail color for me, '+name()+'!</p>'+panel(230,jetty(240,'happy',{float:1}))+'<div class="lbl">Tail color</div><div class="sw">'+h+'</div><div class="pad"></div>'+cta(nextBtn('Next','handoff'))},
+handoff:function(){return obHead('handoff')+'<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px"><div style="width:84px;height:84px;border-radius:42px;background:var(--butter);display:grid;place-items:center">'+ic('lock',40,2.2)+'</div><h1>Grown-up time</h1><p class="lead">Please hand the phone to a grown-up. They will set a PIN, add your School ID or Aadhaar card, and say who is flying with you.</p><p class="fine">Only a grown-up with the PIN can add or change these later.</p></div>'+cta('<button class="btn dark" data-a="startpin">I\'m the grown-up '+ic('arrow',24,2.8)+'</button>')},
+pin:function(){var c=V.pinCtx||{mode:'set'},t,sub;if(c.mode==='set'){t=V.pinFirst?'Type it again':'Create a PIN';sub=V.pinFirst?'Enter the same 4 digits to confirm.':'Choose 4 digits only you will remember.'}else{t='Grown-ups only';sub='Enter your 4-digit PIN to continue.'}
+ var d='';for(var i=0;i<4;i++)d+='<i'+(i<V.pinBuf.length?' class="on"':'')+'></i>';var k='';['1','2','3','4','5','6','7','8','9','','0','del'].forEach(function(x){k+=x===''?'<span></span>':'<button class="key" data-a="key" data-v="'+x+'"'+(x==='del'?' aria-label="Delete last digit"':'')+'>'+(x==='del'?ic('del',28):x)+'</button>'});
+ var sh=V.shake?' shake':'';V.shake=0;
+ return(c.mode==='set'?obHead('pin'):'<div class="top">'+back()+'<span class="pill" style="background:var(--sand)">'+ic('lock',16,2.8)+'Grown-ups only</span></div>')+'<h1 style="margin-top:16px">'+t+'</h1><p class="lead" style="margin-top:4px">'+sub+'</p><div class="dots'+sh+'" role="img" aria-label="'+V.pinBuf.length+' of 4 digits entered">'+d+'</div><div class="msg" aria-live="polite">'+esc(V.pinMsg)+'</div><div class="keys" style="margin-top:6px">'+k+'</div><div class="pad"></div>'},
+papers:function(){var onb=V.papersFrom==='onb';function card(k,t,tint,note){var has=S.papers[k],img=V.imgs[k];return'<div class="card"><div style="display:flex;gap:14px;align-items:center"><div class="thumb" style="background:var(--'+tint+')">'+(img?'<img alt="'+t+' photo" src="'+img+'">':ic('id',34,2))+'</div><div style="flex:1;min-width:0"><div style="font-family:var(--head);font-size:22px;line-height:24px;font-weight:700">'+t+'</div><div class="fine" style="margin:2px 0 0;display:flex;gap:6px;align-items:center">'+(has?ic('check',16,3)+' Added':'Not added yet')+'</div></div></div><p class="fine">'+note+'</p><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><label class="btn sm dark" for="f-'+k+'">'+ic('camera',20)+(has?'Replace photo':'Add photo')+'</label><input type="file" id="f-'+k+'" accept="image/*" data-k="'+k+'"><button class="btn sm ghost" data-a="sample" data-k="'+k+'" style="height:48px;font-size:17px">Use a sample</button></div></div>'}
+ var any=S.papers.school||S.papers.aadhaar;
+ return(onb?obHead('papers'):'<div class="top">'+back()+'<span class="pill" style="background:var(--mint)">'+ic('lock',16,2.8)+'Unlocked</span></div>')+'<h1 style="margin-top:16px">Travel papers</h1><p class="lead" style="margin-top:4px">Add a School ID or an Aadhaar card for boarding.</p><div class="stack" style="margin-top:14px">'+card('school','School ID','sky','Used at the entry and boarding gates.')+card('aadhaar','Aadhaar card','butter','Kids only see a check mark. The number stays hidden.')+'</div><p class="fine">Demo: photos stay in this browser tab and are not uploaded.</p><div class="pad"></div>'+cta(onb?'<button class="btn" data-a="go" data-to="grownup">'+(any?'Next':'Skip for now')+' '+ic('arrow',24,2.8)+'</button>':'<button class="btn" data-a="back">Done '+ic('check',24,3)+'</button>')},
+grownup:function(){var r=['Mum','Dad','Grandparent','Someone else'],h='';r.forEach(function(x){h+='<button class="chip txt'+(S.who&&S.who.role===x?' on':'')+'" data-a="who" data-v="'+x+'" aria-pressed="'+!!(S.who&&S.who.role===x)+'">'+x+'</button>'});
+ return obHead('grownup')+'<h1 style="margin-top:16px">Who flies with you?</h1><p class="lead" style="margin-top:4px">This person will be your airport buddy and can follow your trip.</p><div class="lbl">Their role</div><div class="chips two">'+h+'</div><label class="lbl" for="gname">Their name (optional)</label><input class="field" id="gname" type="text" maxlength="24" autocomplete="off" placeholder="e.g. Priya" value="'+esc(S.who&&S.who.name)+'"><div class="pad"></div>'+cta(nextBtn('Next','face',!S.who))},
+face:function(){var st=V.scan,bt=st==='done'?'<span class="okbadge">'+ic('check',18,3)+' Face Pass saved</span>':'';
+ return obHead('face')+'<h1 style="margin-top:16px">Your Face Pass</h1>'+bubble('The gate scanner will say hi to your face. Let\'s practise!','wow',100)+panel(270,scanBox())+'<div class="c" style="margin-top:12px;min-height:38px">'+bt+'</div><p class="fine c">Demo: this prototype does not use your camera.</p><div class="pad"></div>'+cta((st==='done'?nextBtn('Next','ready'):'<button class="btn" data-a="scan" data-t="face"'+(st==='run'?' disabled':'')+'>'+(st==='run'?'Scanning...':'Scan my face')+'</button>'))},
+ready:function(){function li(i,t,v){return'<div class="row" style="min-height:52px"><span class="ico" style="--t:var(--mint)">'+ic(i,22)+'</span><span style="flex:1">'+t+'</span><span class="fine" style="margin:0">'+v+'</span></div>'}
+ var pp=(S.papers.school?1:0)+(S.papers.aadhaar?1:0);
+ return'<div class="top">'+back()+'<div style="flex:1"><div class="step">All done</div>'+bars(8,8)+'</div></div><div class="c" style="margin-top:6px">'+jetty(190,'happy',{float:1})+'<h1>You\'re all set, '+name()+'!</h1></div><div class="stack" style="margin-top:12px">'+li('user','Pilot','Age '+S.age)+li('id','Papers',pp+' of 2 added')+li('people','Airport buddy',role())+li('camera','Face Pass',S.face?'Saved':'Not yet')+'</div><div class="pad"></div>'+cta('<button class="btn" data-a="finishonb">Open my Jetty home '+ic('arrow',24,2.8)+'</button>')},
+
+home:function(){var done=S.tripDone;
+ var card=done?'<div class="card" style="margin-top:14px"><div style="display:flex;align-items:center;justify-content:space-between"><div class="fine" style="margin:0">Last trip</div><span class="pill" style="background:var(--mint)">'+ic('check',16,3)+' Landed safely</span></div><div style="font-family:var(--head);font-size:34px;line-height:38px;font-weight:700;margin-top:6px">'+TRIP.from+' to '+TRIP.to+'</div><div class="fine" style="margin:2px 0 0">'+TRIP.fromCity+' to '+TRIP.toCity+' · '+TRIP.flight+'</div><button class="btn ghost" data-a="replay" style="margin-top:14px">Replay this adventure</button></div>'
+ :'<div class="card" style="margin-top:14px"><div style="display:flex;align-items:center;justify-content:space-between"><div class="fine" style="margin:0">Your next flight</div><span class="pill" style="background:var(--mint)">in 3 days</span></div><div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;margin-top:6px"><div><div style="font-family:var(--head);font-size:42px;line-height:44px;font-weight:700">'+TRIP.from+'</div><div class="fine" style="margin:0">'+TRIP.fromCity+'</div></div>'+plane(32,90)+'<div style="text-align:right"><div style="font-family:var(--head);font-size:42px;line-height:44px;font-weight:700">'+TRIP.to+'</div><div class="fine" style="margin:0">'+TRIP.toCity+'</div></div></div><div style="font-size:17px;font-weight:800;margin-top:6px">'+tripDate()+' · '+TRIP.dep+' · '+TRIP.flight+' · Seat '+TRIP.seat+'</div><button class="btn" data-a="go" data-to="map" style="margin-top:14px">Start my adventure '+ic('arrow',24,2.8)+'</button></div>';
+ return'<div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px"><span style="font-family:var(--head);font-size:26px;font-weight:700">DigiYatra</span><span class="pill">Kids</span></div><button data-a="tab" data-to="me" style="height:44px;padding:0 14px 0 6px;border-radius:22px;background:var(--card);border:2px solid var(--line);display:flex;align-items:center;gap:8px;font-weight:800"><span style="width:32px;height:32px;border-radius:16px;background:var(--sky);display:grid;place-items:center">'+esc((S.name||'A').trim().charAt(0).toUpperCase())+'</span>'+name()+'</button></div><div class="say" style="margin-top:14px;background:var(--sky);border-radius:28px;padding:12px 14px 4px 10px"><div class="j">'+jetty(120,done?'happy':'smile',{float:1})+'</div><div class="bubble">'+(done?'You did it, '+name()+'! Mumbai is in your passport.':'Hi '+name()+'! '+say('Ready for Mumbai? Our adventure is almost here.','Mumbai flight coming up.'))+'</div></div>'+card+'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:16px"><div style="font-family:var(--head);font-size:22px;font-weight:700">My flight stamps</div><div class="fine" style="margin:0">'+S.flights.length+' flight'+(S.flights.length===1?'':'s')+'</div></div>'+stampRow()+'<div class="pad"></div>'+nav('home')},
+stamps:function(){var L=level(S.flights.length),n=S.flights.length,next=L[1],pct=Math.min(100,Math.round(n/next*100)),h='';S.flights.forEach(function(x){h+='<div>'+stamp(x.c,x.m,x.b,92)+'</div>'});
+ return'<h1>My flight stamps</h1><div class="card" style="margin-top:14px;background:var(--butter);border-color:var(--butter)"><div class="fine" style="margin:0">Your level</div><div style="font-family:var(--head);font-size:30px;line-height:34px;font-weight:700">'+L[0]+'</div><div class="meter" style="margin-top:8px"><i style="width:'+pct+'%"></i></div><div class="fine" style="margin-top:6px">'+n+' of '+next+' flights to the next level</div></div>'+(n?'<div class="stampgrid">'+h+'</div>':'<div class="card c" style="margin-top:14px"><p class="lead" style="margin:0">Your first stamp is waiting. Take a flight and I\'ll stamp your passport!</p></div>')+'<div class="pad"></div>'+nav('stamps')},
+me:function(){var cs=['#FF8A6B','#F6C85F','#4FB6A8','#7DB7E8','#C9A6E4'],h='';cs.forEach(function(c,i){h+='<button style="background:'+c+'" class="'+(S.color===c?'on':'')+'" data-a="color" data-v="'+c+'" aria-label="Tail color '+(i+1)+'" aria-pressed="'+(S.color===c)+'"></button>'});
+ function st(ok){return ok?'<span class="pill" style="background:var(--mint)">'+ic('check',14,3)+' Added</span>':'<span class="pill" style="background:var(--sand)">Not added</span>'}
+ return'<h1>My Jetty account</h1><div class="card" style="margin-top:14px;background:var(--sky);border-color:var(--sky);display:flex;align-items:center;gap:12px"><div style="width:68px;height:68px;border-radius:34px;background:var(--blush);border:3px solid var(--ink);display:grid;place-items:center;font-family:var(--head);font-size:34px;font-weight:700">'+esc((S.name||'A').trim().charAt(0).toUpperCase())+'</div><div style="flex:1;min-width:0"><div style="font-family:var(--head);font-size:28px;line-height:30px;font-weight:700">'+name()+'</div><div style="font-weight:800;color:var(--body)">'+level(S.flights.length)[0]+' · '+S.flights.length+' flights</div></div>'+jetty(74,'smile')+'</div><div class="lbl">My travel papers</div><div class="stack">'+'<div class="row" style="min-height:56px"><span class="ico" style="--t:var(--sky)">'+ic('id')+'</span><span style="flex:1">School ID</span>'+st(S.papers.school)+'</div><div class="row" style="min-height:56px"><span class="ico" style="--t:var(--butter)">'+ic('id')+'</span><span style="flex:1">Aadhaar card</span>'+st(S.papers.aadhaar)+'</div><div class="row" style="min-height:56px"><span class="ico" style="--t:var(--blush)">'+ic('camera')+'</span><span style="flex:1">Face Pass</span>'+st(S.face)+'</div></div><div class="lbl">My grown-up</div><div class="row" style="--t:var(--mint)"><span class="ico">'+ic('people')+'</span><span style="flex:1">'+role()+'</span><span class="pill" style="background:var(--sand)">Airport buddy</span></div><div class="lbl">Jetty\'s tail color</div><div class="sw">'+h+'</div><button class="row" data-a="startverify" style="width:100%;margin-top:16px;border:2px dashed #8A8F9A;background:transparent;text-align:left"><span class="ico" style="--t:var(--sand)">'+ic('lock',20)+'</span><span style="flex:1"><span style="display:block;font-family:var(--head);font-size:19px;line-height:21px;font-weight:700">Grown-ups corner</span><span style="display:block;font-size:15px;color:var(--muted)">Add or change papers, needs a PIN</span></span></button><div class="pad"></div>'+nav('me')},
+
+map:function(){function st(n,t,s,cur){return'<div class="row" style="'+(cur?'border:3px solid var(--ink);':'border-color:transparent;background:transparent;')+'min-height:72px"><span class="ico" style="--t:'+(cur?'var(--coral)':'var(--sand)')+';font-family:var(--head);font-size:22px;font-weight:700;border:3px solid var(--ink)">'+n+'</span><span style="flex:1"><span style="display:block;font-family:var(--head);font-size:21px;line-height:23px;font-weight:700">'+t+'</span><span style="display:block;font-size:15px;line-height:19px;color:var(--muted)">'+s+'</span></span>'+(cur?'<span class="pill">You are here</span>':'')+'</div>'}
+ return'<div class="top">'+back()+'<h1 style="font-size:28px">My airport adventure</h1></div>'+bubble(say('Five stops to go! I\'ll be with you at every one.','You\'ve flown before, so I\'ll keep tips short. 5 stops to go!'),'smile',96)+'<div class="stack" style="margin-top:12px;gap:2px">'+st(1,'Entry gate','Smile for the face scan',1)+st(2,'Check-in and bags','Say bye to your suitcase')+st(3,'Security check','Tray, belt, walk through')+st(4,'Find your gate','Gate '+TRIP.gate+', snack time')+st(5,'Board and take off','Scan your boarding pass')+'<div class="row" style="border:2px dashed #8A8F9A;background:transparent;min-height:56px;margin-top:6px"><span class="ico" style="--t:var(--mint)">'+plane(20,0)+'</span><span>After you land: collect your bag and meet '+role()+'</span></div></div><div class="pad"></div>'+cta('<button class="btn" data-a="go" data-to="entry">Let\'s go to stop 1 '+ic('arrow',24,2.8)+'</button>')},
+entry:function(){var st=V.scan,bt=st==='done'?'<span class="okbadge">'+ic('check',18,3)+' Face matched</span>':(S.face?'<span class="okbadge" style="background:var(--sky)">Your face is already saved</span>':'');
+ return stopHead(1,'Entry gate')+bubble(say('This is the entry gate. A camera will say hi to your face.','Look at the camera and smile, just like last time!'),st==='done'?'happy':'smile',112)+panel(270,scanBox())+'<div class="c" style="margin-top:12px;min-height:38px">'+bt+'</div>'+row('people','Stay close to '+role()+' while you walk in.','var(--butter)').replace('class="row"','class="row" style="margin-top:4px"')+'<div class="pad"></div>'+cta(st==='done'?nextBtn('Done! Next stop','checkin'):'<button class="btn" data-a="scan" data-t="entry"'+(st==='run'?' disabled':'')+'>'+(st==='run'?'Scanning...':'Look at the camera')+'</button>')},
+checkin:function(){var b=V.bag,line=b==='done'?'Bye bag! It will meet you in '+TRIP.toCity+'.':say('Time to say bye to your suitcase. It will meet you in '+TRIP.toCity+'!','Drop your bag. It will meet you in '+TRIP.toCity+'.');
+ var belt='<div class="belt"><svg width="100%" height="190" viewBox="0 0 300 190" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect x="20" y="130" width="260" height="22" rx="11" fill="#CFC9BC" stroke="#1F2430" stroke-width="4"/>'+[40,100,160,220,260].map(function(x){return'<circle cx="'+x+'" cy="141" r="6" fill="#F7F4EE" stroke="#1F2430" stroke-width="3"/>'}).join('')+'<rect x="262" y="60" width="26" height="72" rx="8" fill="#fff" stroke="#1F2430" stroke-width="4"/></svg>'+(b==='done'?'':'<div class="bagimg'+(b==='moving'?' go':'')+'" style="left:calc(50% - 130px);top:46px">'+suitcase()+'</div>')+'</div>';
+ return stopHead(2,'Check-in and bags')+bubble(line,b==='done'?'happy':'smile',112)+'<div class="panel" style="height:200px;margin-top:14px;background:var(--mint)">'+belt+'</div><div class="stack" style="margin-top:12px">'+row('bag','Lift your bag onto the belt','var(--butter)')+row('id','Show your bag tag to the scanner','var(--sky)')+row('bag','Keep your small bag with you','var(--blush)')+'</div><div class="pad"></div>'+cta(b==='done'?nextBtn('Bag dropped! Next stop','security'):'<button class="btn" data-a="sendbag"'+(b==='moving'?' disabled':'')+'>'+(b==='moving'?'Off it goes...':'Put my suitcase on the belt')+'</button>')},
+security:function(){return stopHead(3,'Security check')+bubble('You know this one! Pop these things in the tray.','smile',112)+'<div class="stack" style="margin-top:14px">'+row('phone','Phone and tablet go in the tray','var(--sky)')+row('belt','Belt and metal things go in the tray','var(--butter)')+row('bottle','Empty your water bottle','var(--mint)')+row('jacket','Jacket and shoes go in the tray','var(--blush)')+'</div><div class="row tile" style="--t:var(--mint);margin-top:12px;font-size:17px">'+'<span class="ico" style="--t:#fff">'+ic('shield',22)+'</span><span>Walk through the arch slowly. The officers are friendly helpers!</span></div><div class="pad"></div>'+cta(nextBtn('Through security! Next stop','gate'))},
+gate:function(){var sh=V.gateScan?'<div class="sheet"><div><div style="font-family:var(--head);font-size:26px;font-weight:700">Hold your pass to the scanner</div><div class="pass"><div class="fine" style="margin:0">Boarding pass</div><div style="font-family:var(--head);font-size:30px;line-height:32px;font-weight:700">'+TRIP.from+' to '+TRIP.to+'</div><div style="font-weight:800">'+name()+' · Seat '+TRIP.seat+'</div></div><p class="lead c">Beep beep...</p></div></div>':'';
+ return stopHead(4,'Find your gate')+bubble('Gate '+TRIP.gate+' is your spot. You have a little time before we fly!','smile',112)+'<div class="card" style="margin-top:14px;border:3px solid var(--ink);padding:0;overflow:hidden"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 18px 4px"><div><div class="fine" style="margin:0">Gate</div><div style="font-family:var(--head);font-size:68px;line-height:68px;font-weight:700">'+TRIP.gate+'</div></div><div style="text-align:right"><div class="fine" style="margin:0">Boarding at</div><div style="font-family:var(--head);font-size:38px;line-height:42px;font-weight:700">'+TRIP.board+'</div></div></div><div style="display:flex;justify-content:space-between;padding:12px 18px;background:var(--butter);border-top:3px solid var(--ink);font-weight:800;font-size:17px"><span>Flight '+TRIP.flight+'</span><span>Seat '+TRIP.seat+' · Window</span></div></div><div class="lbl">While you wait, you can</div><div class="stack">'+row('bottle','Refill your water bottle','var(--sky)')+row('snack','Eat a snack to keep going','var(--mint)')+row('rest','Use the restroom before we fly','var(--blush)')+'</div><div class="pad"></div>'+cta('<button class="btn" data-a="gatescan">Scan my boarding pass '+ic('arrow',24,2.8)+'</button>')+sh},
+boarded:function(){return stopHead(5,'Welcome aboard!')+panel(210,'<svg width="100%" height="210" viewBox="0 0 350 210" aria-hidden="true" style="position:absolute;inset:0">'+cloud(60,50)+cloud(290,170,1.1)+cloud(40,180,.8)+'</svg><div style="transform:rotate(-8deg)">'+jetty(210,'happy',{float:1})+'</div>')+bubble('Beep! Your pass worked. Window seat '+TRIP.seat+' is ready for you, '+name()+'!','happy',100)+'<div class="stack" style="margin-top:4px">'+row('seat','Seatbelt on, nice and snug','var(--sky)')+row('bag','Small bag goes under the seat in front','var(--butter)')+row('phone','Phone on flight mode','var(--mint)')+'</div><div class="pad"></div>'+cta('<button class="btn" data-a="go" data-to="inflight">Take off! '+plane(24,0)+'</button>')},
+inflight:function(){var facts=['Planes fly above most clouds, where the air is smooth.','Every plane window has a tiny hole that keeps the air pressure balanced.','Delhi to Mumbai is about '+TRIP.km+' km. That is more than 10,000 football pitches laid end to end.'];
+ return'<div class="top"><div style="flex:1"><div class="step">In the air</div></div><span class="pill" style="background:var(--mint)">'+TRIP.flight+'</span></div><h1 style="margin-top:10px">Flying to '+TRIP.toCity+'</h1><div class="arc"><svg width="100%" height="200" viewBox="0 0 350 200" aria-hidden="true"><circle cx="46" cy="40" r="22" fill="#F6C85F"/>'+cloud(250,40,.9)+cloud(80,110,.8)+cloud(300,120,.7)+'<path d="M40 160 Q175 -30 310 160" fill="none" stroke="#1F2430" stroke-width="3" stroke-dasharray="6 8" stroke-linecap="round"/><circle cx="40" cy="160" r="7" fill="#1F2430"/><circle cx="310" cy="160" r="7" fill="#1F2430"/><text x="40" y="188" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="16" fill="#1F2430">'+TRIP.from+'</text><text x="310" y="188" text-anchor="middle" font-family="Baloo 2" font-weight="700" font-size="16" fill="#1F2430">'+TRIP.to+'</text></svg><div class="jetpos" id="jet">'+jetty(88,'happy')+'</div></div><div class="meter" style="margin-top:12px" aria-hidden="true"><i id="bar" style="width:0%"></i></div><div class="stats"><div class="stat"><b id="pct">0%</b><span>of the way</span></div><div class="stat"><b id="left">'+TRIP.dur+'</b><span>time left</span></div><div class="stat"><b id="alt">0 m</b><span>height</span></div></div><div class="card fact" id="fact" style="margin-top:12px"><div class="fine" style="margin:0">Jetty fact</div><div style="font-size:17px;line-height:23px;font-weight:800">'+facts[0]+'</div></div><div class="pad"></div>'+cta('<button class="btn ghost" data-a="go" data-to="landed">Skip to landing (demo)</button>')},
+landed:function(){return'<div class="top"><div style="flex:1"><div class="step">Landed</div>'+bars(1,3)+'</div></div><h1 style="margin-top:16px">We landed!</h1>'+panel(200,'<svg width="100%" height="200" viewBox="0 0 350 200" aria-hidden="true" style="position:absolute;inset:0">'+cloud(70,45)+cloud(280,60,.9)+'<rect x="0" y="150" width="350" height="50" fill="#CFC9BC"/><path d="M20 175h50M110 175h50M200 175h50M290 175h40" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg><div style="margin-top:14px">'+jetty(190,'happy',{float:1})+'</div>')+bubble('Welcome to '+TRIP.toCity+', '+name()+'! Great flying today.','happy',100)+'<div class="stack" style="margin-top:4px">'+row('seat','Stay seated until the seatbelt sign goes off','var(--sky)')+row('bag','Take your small bag and jacket','var(--butter)')+row('people','Say thank you to the crew','var(--mint)')+'</div><div class="pad"></div>'+cta(nextBtn('Next: collect my bag','arrivals'))},
+arrivals:function(){var ok=V.bagPick==='ok',cols=['#7DB7E8','#C9A6E4','#4FB6A8'],bags=[{k:'a',c:cols[0]},{k:'ok',c:null},{k:'b',c:cols[1]},{k:'c',c:cols[2]}],h='';bags.forEach(function(b,i){h+='<button class="bagbtn'+(b.k==='ok'&&ok?' ok':'')+'" data-a="pick" data-v="'+b.k+'" aria-label="Bag '+(i+1)+(b.k==='ok'?', yellow with a star':'')+'">'+(b.k==='ok'?suitcase():otherBag(b.c,i))+'</button>'});
+ return'<div class="top"><div style="flex:1"><div class="step">Arrivals</div>'+bars(2,3)+'</div></div><h1 style="margin-top:16px">Collect your bag</h1>'+bubble(ok?'Found it! Nice eyes, '+name()+'.':'Look for the yellow suitcase with a star. Tap it when you spot it!',ok?'happy':'wow',100)+'<div class="tag">'+h+'</div>'+(ok?'<div class="card tile" style="--t:var(--mint);margin-top:12px;display:flex;gap:12px;align-items:center;border:0"><span class="ico" style="width:44px;height:44px;border-radius:22px;background:#fff;display:grid;place-items:center;flex:none">'+ic('people',24)+'</span><div style="font-size:17px;font-weight:800;line-height:22px">Walk to the arrivals exit. '+role()+' will be waiting for you.</div></div>':'')+'<div class="pad"></div>'+cta(ok?'<button class="btn" data-a="go" data-to="complete">I found my grown-up! '+ic('arrow',24,2.8)+'</button>':'<button class="btn" disabled>Find your bag first</button>')},
+complete:function(){var n=S.flights.length,L=level(n),prev=level(n-1),up=L[0]!==prev[0],nx=L[1],last=S.flights[n-1]||{};
+ return'<div class="top"><div style="flex:1"><div class="step">Trip complete</div>'+bars(3,3)+'</div></div><h1 style="margin-top:12px">Trip complete!</h1><div class="card" style="margin-top:12px;background:var(--butter);border-color:var(--butter);display:flex;align-items:center;gap:16px"><div class="slam">'+stamp(TRIP.to,'just now','--blush',96)+'</div><div><div style="font-family:var(--head);font-size:22px;line-height:26px;font-weight:700">New stamp earned!</div><div style="font-weight:800;color:var(--body)">Flight '+n+' is in your passport.</div></div></div><div class="card" style="margin-top:10px"><div style="display:flex;justify-content:space-between;align-items:center"><div style="font-family:var(--head);font-size:22px;font-weight:700">'+(up?'Level up! '+L[0]:L[0])+'</div><span class="pill">'+n+' / '+nx+'</span></div><div class="meter" style="margin-top:8px;background:var(--sand)"><i style="width:'+Math.min(100,Math.round(n/nx*100))+'%"></i></div><div class="fine" style="margin-top:6px">'+(nx-n>0?(nx-n)+' more flight'+(nx-n===1?'':'s')+' to the next level':'Top level reached')+'</div></div><div class="stats"><div class="stat"><b>'+TRIP.km+'</b><span>km flown</span></div><div class="stat"><b>'+TRIP.dur+'</b><span>in the air</span></div><div class="stat"><b>'+TRIP.seat+'</b><span>window seat</span></div></div><div class="lbl">How was your flight?</div><div class="rate">'+[['smooth','Smooth'],['okay','Okay'],['bumpy','Bumpy']].map(function(r,i){return'<button data-a="rate" data-v="'+r[0]+'" class="'+(S.rating===r[0]?'on':'')+'" aria-pressed="'+(S.rating===r[0])+'"><svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="14" fill="'+['#D5EFEA','#FBE9B7','#FFE0D6'][i]+'" stroke="#1F2430" stroke-width="2.500"/><circle cx="12" cy="14" r="1.800" fill="#1F2430"/><circle cx="22" cy="14" r="1.800" fill="#1F2430"/><path d="'+['M11 20 Q17 26 23 20','M11 22h12','M11 24 Q17 19 23 24'][i]+'" fill="none" stroke="#1F2430" stroke-width="2.500" stroke-linecap="round"/></svg>'+r[1]+'</button>'}).join('')+'</div>'+(S.rating?'<p class="fine c" style="margin-top:8px">Thanks, '+name()+'! '+({smooth:'Smooth skies are the best.',okay:'Every flight teaches us something.',bumpy:'Bumps are normal. You were brave!'})[S.rating]+'</p>':'')+'<div class="lbl">Tell '+role()+'</div><div class="card" style="display:flex;gap:12px;align-items:center"><div style="flex:1;font-size:17px;line-height:22px;font-weight:800">"'+name()+' landed safely in '+TRIP.toCity+' and found the suitcase."</div><button class="btn sm'+(S.sent?'':' dark')+'" data-a="send"'+(S.sent?' disabled':'')+'>'+(S.sent?ic('check',18,3)+'Sent':ic('send',18)+'Send')+'</button></div><p class="fine">Demo: no message is really sent.</p><div class="pad"></div>'+cta('<button class="btn" data-a="finishtrip">Back to my home '+ic('arrow',24,2.8)+'</button>')}
+};
+
+var AFTER={
+inflight:function(){var p=0,bar=document.getElementById('bar'),pct=document.getElementById('pct'),left=document.getElementById('left'),alt=document.getElementById('alt'),jet=document.getElementById('jet'),fact=document.getElementById('fact'),box=jet.parentNode,fi=0;
+ var facts=['Planes fly above most clouds, where the air is smooth.','Every plane window has a tiny hole that keeps the air pressure balanced.','Delhi to Mumbai is about '+TRIP.km+' km. That is more than 10,000 football pitches laid end to end.'];
+ every(function(){p=Math.min(1,p+.1/12);var W=box.clientWidth/350,t=p,x=(1-t)*(1-t)*40+2*(1-t)*t*175+t*t*310,y=(1-t)*(1-t)*160+2*(1-t)*t*-30+t*t*160,dx=2*(1-t)*(175-40)+2*t*(310-175),dy=2*(1-t)*(-30-160)+2*t*(160+30),a=Math.atan2(dy,dx)*180/Math.PI;
+  jet.style.left=(x*W)+'px';jet.style.top=((y-20)*(box.clientHeight/200))+'px';jet.style.transform='translate(-50%,-50%) rotate('+(a*.6)+'deg)';
+  bar.style.width=Math.round(p*100)+'%';pct.textContent=Math.round(p*100)+'%';var mins=Math.round(135*(1-p));left.textContent=Math.floor(mins/60)+'h '+('0'+(mins%60)).slice(-2)+'m';alt.textContent=(Math.round(Math.min(1,p*8,(1-p)*8)*105)*100).toLocaleString('en-IN')+' m';
+  if(p>=1)go('landed');},100);
+ every(function(){fi=(fi+1)%facts.length;fact.style.opacity=0;later(function(){fact.lastChild.textContent=facts[fi];fact.style.opacity=1},300)},3800)},
+complete:function(){var dev=document.querySelector('.device');var old=dev.querySelector('.conf');if(old)old.remove();var c=document.createElement('div');c.className='conf';c.setAttribute('aria-hidden','true');var cols=['#FF8A6B','#F6C85F','#4FB6A8','#7DB7E8','#C9A6E4'];for(var i=0;i<28;i++){var s=document.createElement('i');s.style.left=(Math.random()*100)+'%';s.style.background=cols[i%cols.length];s.style.animationDelay=(Math.random()*1.2)+'s';s.style.animationDuration=(2.6+Math.random()*1.6)+'s';c.appendChild(s)}dev.appendChild(c);later(function(){c.remove()},5200)}
+};
+
+function render(anim){clearTimers();if(V.screen!=='complete'){var cf=document.querySelector('.conf');if(cf)cf.remove()}var f=SC[V.screen]||SC.home;app.className='scr'+(anim===false?'':' in');app.innerHTML=f();if(anim!==false)app.scrollTop=0;if(AFTER[V.screen])AFTER[V.screen]()}
+function go(to,replace){if(!replace)V.hist.push(V.screen);V.screen=to;
+ if(to==='entry'||to==='face')V.scan='idle';if(to==='checkin')V.bag='idle';if(to==='gate')V.gateScan=false;if(to==='arrivals')V.bagPick=null;
+ if(to==='complete'&&!S.tripDone){S.flights.push({c:TRIP.to,m:new Date().toLocaleDateString('en-IN',{month:'short'}),b:'--blush'});S.tripDone=true;S.rating=null;S.sent=false;save()}
+ render()}
+function backNav(){V.screen=V.hist.pop()||(S.onboarded?'home':'welcome');render()}
+function tab(to){V.hist=[];V.screen=to;render()}
+function demoFill(){if(!S.name){S.name='Aarav';S.age=9;S.flown=true}if(!S.who)S.who={role:'Mum',name:''};S.face=true;if(!S.papers.school&&!S.papers.aadhaar)S.papers={school:true,aadhaar:true};if(!S.onboarded){S.onboarded=true;if(S.flown&&!S.flights.length)S.flights=clone(SAMPLE)}save()}
+function openPin(mode,next,from){V.pinCtx={mode:mode,next:next};V.pinBuf='';V.pinFirst=null;V.pinMsg='';V.papersFrom=from;go('pin')}
+function pinKey(v){if(v==='del'){V.pinBuf=V.pinBuf.slice(0,-1);V.pinMsg='';render(false);return}if(V.pinBuf.length>=4)return;V.pinBuf+=v;V.pinMsg='';render(false);
+ if(V.pinBuf.length===4)later(function(){var c=V.pinCtx,b=V.pinBuf;V.pinBuf='';
+  if(c.mode==='set'){if(!V.pinFirst){V.pinFirst=b}else if(V.pinFirst===b){V.pin=b;V.pinFirst=null;go(c.next,true);return}else{V.pinFirst=null;V.pinMsg='Those did not match. Let\'s start again.';V.shake=1}}
+  else{if(b===V.pin){go(c.next,true);return}V.pinMsg='That PIN is not right. Try again.';V.shake=1}
+  render(false)},180)}
+
+var ACT={
+go:function(d){go(d.to)},back:backNav,tab:function(d){tab(d.to)},
+age:function(d){S.age=+d.v;save();render(false)},
+flown:function(d){S.flown=d.v==='1';save();render(false)},
+color:function(d){S.color=d.v;save();render(false)},
+startpin:function(){openPin('set','papers','onb')},
+startverify:function(){openPin(V.pin?'verify':'set','papers','me')},
+key:function(d){pinKey(d.v)},
+sample:function(d){S.papers[d.k]=true;save();render(false)},
+who:function(d){S.who={role:d.v,name:(S.who&&S.who.name)||''};save();render(false)},
+scan:function(d){V.scan='run';render(false);later(function(){V.scan='done';if(d.t==='face'){S.face=true;save()}render(false)},1600)},
+sendbag:function(){V.bag='moving';render(false);later(function(){V.bag='done';render(false)},1500)},
+gatescan:function(){V.gateScan=true;render(false);later(function(){go('boarded')},1800)},
+pick:function(d){if(d.v==='ok'){V.bagPick='ok';render(false)}else{toast('Not that one. Look for the yellow bag with a star!')}},
+rate:function(d){S.rating=d.v;save();render(false)},
+send:function(){S.sent=true;save();toast('Sent in this demo');render(false)},
+finishonb:function(){S.onboarded=true;if(S.flown&&!S.flights.length)S.flights=clone(SAMPLE);save();V.hist=[];V.screen='home';render()},
+finishtrip:function(){V.hist=[];V.screen='home';render()},
+replay:function(){S.tripDone=false;if(S.flights.length&&S.flights[S.flights.length-1].c===TRIP.to)S.flights.pop();save();render(false)},
+jump:function(d){var t=d.to,onb=['welcome','about','handoff','face','ready'].indexOf(t)>-1;if(!onb)demoFill();else if(t==='ready'||t==='face'){if(!S.name){S.name='Aarav';S.age=9}if(!S.who)S.who={role:'Mum',name:''}}
+  if(t==='handoff'){V.hist=['about'];V.screen='handoff';render();return}
+  if(t==='complete'&&S.tripDone){S.tripDone=false;if(S.flights.length&&S.flights[S.flights.length-1].c===TRIP.to)S.flights.pop()}
+  V.hist=['home'];V.screen='';go(t,true);if(t==='home'||t==='stamps'||t==='me'||t==='welcome')V.hist=[]},
+reset:function(){try{localStorage.removeItem(KEY)}catch(e){}S=clone(DEF);V.pin=null;V.imgs={};V.hist=[];V.screen='welcome';render()}
+};
+
+document.addEventListener('click',function(e){var b=e.target.closest('[data-a]');if(!b||b.disabled)return;var f=ACT[b.dataset.a];if(f){e.preventDefault();f(b.dataset,b)}});
+document.addEventListener('input',function(e){var t=e.target;if(t.id==='name'){S.name=t.value;save();var n=document.querySelector('[data-next]');if(n)n.disabled=!(S.name.trim()&&S.age)}
+ else if(t.id==='gname'){S.who=S.who||{role:'Someone else',name:''};S.who.name=t.value;save()}});
+document.addEventListener('change',function(e){var t=e.target;if(t.matches&&t.matches('input[type=file]')){var f=t.files&&t.files[0],k=t.dataset.k;if(!f)return;if(f.type.indexOf('image/')!==0){toast('Please choose a photo.');return}if(f.size>8e6){toast('That photo is too big. Try one under 8 MB.');return}var r=new FileReader();r.onload=function(){V.imgs[k]=r.result;S.papers[k]=true;save();render(false)};r.readAsDataURL(f)}});
+
+load();V.screen=S.onboarded?'home':'welcome';render(false);
+})();
+</script>
+
+</html>
